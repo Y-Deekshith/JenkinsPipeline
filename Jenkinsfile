@@ -17,7 +17,7 @@ pipeline {
         stage('Uploading Artifact to cloud') {
             steps {
                 sh 'aws s3 ls'
-                s3Upload(file:'*.war', bucket:'dees3devops', path:'/*.war')
+                s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'*.war', bucket:'dees3devops', path:'/*.war')
             }
         }
     }
