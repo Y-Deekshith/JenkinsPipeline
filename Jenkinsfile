@@ -17,7 +17,7 @@ pipeline {
         stage('Uploading Artifact to cloud') {
             steps {
                 sh 'aws s3 ls'
-                s3Upload acl: 'Private', bucket: 'dees3devops', cacheControl: '', excludePathPattern: '', file: 'ROOT${BUILD_NUMBER}.war', includePathPattern: '', metadatas: [''], redirectLocation: '', sseAlgorithm: '', tags: '', text: '', workingDir: ''
+                s3Upload acl: 'Private', bucket: 'dees3devops', file: 'ROOT${BUILD_NUMBER}.war'
             }
         }
     }
