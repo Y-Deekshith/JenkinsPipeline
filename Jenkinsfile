@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Uploading Artifact to cloud') {
             steps {
-                echo 'Hello, S3'
+                sh 'aws s3 ls'
             }
         }
     }
