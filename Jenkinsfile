@@ -1,10 +1,9 @@
 pipeline {
     agent none 
     stages {
-        stage('Cloning git repo') {
+        stage('Start stage') {
             steps {
                 echo 'Hello, Jenkins'
-                sh 'ls -al'
             }
         }
         stage('Build the code') {
