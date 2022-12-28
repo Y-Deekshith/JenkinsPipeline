@@ -3,8 +3,7 @@ pipeline {
     stages {
         stage('Cloning git repo') {
             steps {
-                // echo 'Hello, Maven'
-                sh 'git clone https://github.com/aws-samples/eb-tomcat-snakes.git deegit'
+                echo 'Hello, Jenkins'
                 sh 'ls -al'
             }
         }
