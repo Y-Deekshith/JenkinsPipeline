@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh 'aws s3 ls'
                 echo "${BUILD_NUMBER}"
-                s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'*.war', bucket:'dees3devops', path:'*.war')
+                s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, sourceFile:'*.war', bucket:'dees3devops', path:'*.war')
             }
         }
     }
