@@ -1,7 +1,7 @@
 pipeline {
         environment {
         registry = 'deekshithy/dockerfiles'
-        registryCredential = 'deekshithy'
+        registryCredential = 'dockerhub_id'
         // dockerSwarmManager = '10.40.1.26:2375'
         // dockerhost = '10.40.1.26'
         dockerImage = ''
@@ -35,7 +35,7 @@ pipeline {
                     }
                 }
         }
-        stage('Deploy our image') {
+        stage('Push our image') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
