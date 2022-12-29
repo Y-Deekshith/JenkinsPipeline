@@ -92,7 +92,7 @@ pipeline {
         stage('Terraform validate and apply') {
             when {
                 expression {
-                    env.TERRAFORM == 'NO'
+                    env.TERRAFORM == 'YES'
                 }
             }
             steps{
