@@ -6,6 +6,7 @@ pipeline {
         // dockerhost = '10.40.1.26'
         dockerImage = ''
         PACKER_BUILD = 'NO'
+        TERRAFORM = 'YES'
         }
     agent any 
     stages {
@@ -73,6 +74,47 @@ pipeline {
                     sh "echo variable \\\"imagename\\\" { default = \\\"$AMIID\\\" } >> variables.tf"
                 }
             }
-        }        
+        }
+        stage('Terraform validate and plan') {
+            when {
+                expression {
+                    env.TERRAFORM == 'YES'
+                }
+            }
+            steps{
+                script{
+                    sh 'terraform init'
+                    sh 'terraform validate'
+                    sh 'terraform plan'
+                }
+            }
+        }
+        stage('Terraform validate and apply') {
+            when {
+                expression {
+                    env.TERRAFORM == 'NO'
+                }
+            }
+            steps{
+                script{
+                    sh 'terraform init'
+                    sh 'terraform validate'
+                    sh 'terraform apply --auto-approve'
+                    sh 'terraform state list'
+                }
+            }
+        }
+        stage('Terraform Destroy infra') {
+            when {
+                expression {
+                    env.TERRAFORM == 'NO'
+                }
+            }
+            steps{
+                script{
+                    sh 'terraform destroy --auto-approve'
+                }
+            }
+        }                     
     }
 }
