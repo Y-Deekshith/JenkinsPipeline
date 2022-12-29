@@ -6,7 +6,8 @@ pipeline {
         // dockerhost = '10.40.1.26'
         dockerImage = ''
         PACKER_BUILD = 'NO'
-        TERRAFORM = 'YES'
+        TERRAFORM = 'NO'
+        INFRA = 'NO'
         }
     agent any 
     stages {
@@ -98,7 +99,7 @@ pipeline {
             steps{
                 script{
                     sh 'terraform init'
-                    sh 'terraform validate'
+                    sh 'terraform taint null_resource.docker_deploy'
                     sh 'terraform apply --auto-approve'
                     sh 'terraform state list'
                 }
@@ -117,6 +118,11 @@ pipeline {
             }
         }
         stage('Deploying docker image to infra') {
+            when {
+                expression {
+                    env.INFRA == 'YES'
+                }
+            }
             steps{
                 script{
                     def DOCKER_HOST = readFile('publicip.txt').trim()
