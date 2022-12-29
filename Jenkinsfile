@@ -115,6 +115,14 @@ pipeline {
                     sh 'terraform destroy --auto-approve'
                 }
             }
-        }                     
+        }
+        stage('Deploying docker image to infra') {
+            steps{
+                script{
+                    def DOCKER_HOST = readFile('publicip.txt').trim()
+                    sh "docker -H tcp://$DOCKER_HOST:2375 run --rm -dit --name dee -p 8080:8080 deekshithy/dockerfiles:$BUILD_NUMBER"
+                }
+            }
+        } 
     }
 }
