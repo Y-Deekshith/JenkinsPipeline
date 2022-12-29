@@ -1,4 +1,11 @@
 pipeline {
+        environment {
+        registry = 'deekshithy/dockerfiles'
+        registryCredential = 'deekshithy'
+        // dockerSwarmManager = '10.40.1.26:2375'
+        // dockerhost = '10.40.1.26'
+        dockerImage = ''
+        }
     agent any 
     stages {
         stage('Start stage') {
@@ -21,5 +28,21 @@ pipeline {
                 s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'dees3devops', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: true, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '*.war', storageClass: 'STANDARD_IA', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'dees3devops', userMetadata: []
             }
         }
+        stage('Building our image') {
+            steps{
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    }
+                }
+        }
+        stage('Deploy our image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                    }
+                }
+            }
+        }        
     }
 }
